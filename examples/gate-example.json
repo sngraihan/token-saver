@@ -1,0 +1,19 @@
+{
+  "name": "supervisor-loop",
+  "heartbeat_minutes": 45,
+  "sources": [
+    {
+      "type": "sqlite",
+      "path": "~/.hermes/kanban/boards/main/kanban.db",
+      "query": "select id,status,coalesce(claim_expires,0),coalesce(consecutive_failures,0) from tasks where status in ('running','ready','review','blocked','triage') order by id"
+    },
+    {
+      "type": "file",
+      "path": "~/.hermes/state/alerts.json"
+    },
+    {
+      "type": "cmd",
+      "cmd": "pgrep -fc worker"
+    }
+  ]
+}
